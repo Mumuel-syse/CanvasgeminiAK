@@ -406,7 +406,7 @@
                     opDatabase.push({
                     id: op.id,
                         name: op.name_en,
-                        rarity: op.level + 1,
+                        rarity: op.level,
                         // 3. Langsung ambil nilainya dari classMapping[type]
                         class: classMapping[type], 
                         avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
@@ -484,8 +484,8 @@
                 document.getElementById('noOpResult').classList.add('hidden');
             }
 
-            // Membatasi render untuk performa (Max 100 saat pertama lihat, biar tidak lag gambarnya)
-            const maxRender = query === '' && activeFilter === 'All' ? 100 : filtered.length;
+            // Membatasi render untuk performa (Max 20 saat pertama lihat, biar tidak lag gambarnya)
+            const maxRender = query === '' && activeFilter === 'All' ? 20 : filtered.length;
 
             for(let i=0; i<Math.min(filtered.length, maxRender); i++) {
                 const op = filtered[i];
