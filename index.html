@@ -367,7 +367,7 @@
     <!-- JAVASCRIPT: DATA FETCHING & LOGIC -->
     <script>
         let opDatabase = [];
-        const ACESHIP_AVATAR_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/char_";
+        const ACESHIP_AVATAR_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/";
         const ACESHIP_CLASS_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/classes/class_";
         const ACESHIP_ITEM_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/items/";
 
@@ -400,16 +400,18 @@
                 data.forEach(op => {
                 // 1. Ambil tipe dari API (contoh: "近卫")
                 const type = op.type;
+                const testUrl = `https://aceship.github.io/AN-EN-Tags/img/characters/${op.id}.png`;
+                console.log("Cek URL:", testUrl);
                 // 2. Langsung cek apakah 'type' Mandarin tersebut ada di classMapping
                 // Hapus !op.isNotObtainable karena field ini tidak selalu ada di API Aceship
                 if (classMapping[type]) {
                     opDatabase.push({
-                    id: op.id,
+                        id: op.id,
                         name: op.name_en,
                         rarity: op.level,
                         // 3. Langsung ambil nilainya dari classMapping[type]
                         class: classMapping[type], 
-                        avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
+                        avatar: `https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/${op.id}.png`
                     });
                 } else {
                     // Debug: ini akan membantu Anda melihat jika ada tipe baru yang belum masuk classMapping
@@ -547,7 +549,7 @@
                     const fallbackImg = `${ACESHIP_CLASS_URL}${op.class.toLowerCase()}.png`;
                     
                     div.innerHTML = `
-                        <img src="${op.avatar}" onerror="this.src='${fallbackImg}'">
+                        <img src="${op.avatar}" loading="lazy" onerror="this.src='${fallbackImg}'">
                         <div>
                             <span class="font-bold text-sm">${op.name}</span> 
                             <span class="text-xs text-gray-400">(${op.rarity}★ ${op.class})</span>
