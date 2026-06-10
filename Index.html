@@ -1,0 +1,103 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhodes Island Terminal v7.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Share+Tech+Mono&display=swap');
+        body { background-color: #0f172a; font-family: 'Montserrat', sans-serif; color: #e5e7eb; }
+        .ak-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); backdrop-filter: blur(10px); }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+        .nav-link.active { border-bottom: 2px solid #38bdf8; color: #38bdf8; }
+        input, select { background: rgba(15, 23, 42, 0.8); border: 1px solid #475569; padding: 0.5rem; color: white; border-radius: 4px; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="fixed top-0 w-full z-50 bg-slate-900 border-b border-sky-500/40 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="font-bold text-sky-400">PRTS.NET v7.0</h1>
+            <div class="flex gap-4">
+                <button onclick="switchView('home')" class="nav-link active">Home</button>
+                <button onclick="switchView('operators')" class="nav-link">Database</button>
+                <button onclick="switchView('calculator')" class="nav-link">Calc</button>
+                <button onclick="switchView('planner')" class="nav-link">Planner</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 px-6 max-w-7xl mx-auto">
+        <section id="view-home" class="view-section active text-center py-10">
+            <h2 class="text-4xl font-bold mb-4">SELAMAT DATANG, DOCTOR</h2>
+            <p>Sistem manajemen resource Rhodes Island siap beroperasi.</p>
+        </section>
+
+        <section id="view-operators" class="view-section">
+            <h2 class="text-2xl font-bold mb-4">Database Operator</h2>
+            <div id="operatorGrid" class="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-3"></div>
+        </section>
+
+        <section id="view-calculator" class="view-section">
+            <h2 class="text-2xl font-bold mb-4">Saving Calculator</h2>
+            <div class="ak-panel p-6 rounded-xl space-y-4">
+                <input type="number" id="currentOrundum" class="w-full" placeholder="Jumlah Orundum">
+                <button onclick="calculateSavings()" class="bg-sky-600 w-full py-2 rounded">Hitung Pulls</button>
+                <p id="resTotalPulls" class="text-xl font-bold">Estimasi Pulls: 0</p>
+            </div>
+        </section>
+
+        <section id="view-planner" class="view-section">
+            <h2 class="text-2xl font-bold mb-4">Build Planner</h2>
+            <div class="ak-panel p-6 rounded-xl">
+                <input type="text" id="plannerSearchInput" class="w-full mb-4" placeholder="Cari operator untuk direncanakan...">
+                <div id="buildResults" class="bg-slate-900 p-4 rounded">Silakan pilih operator dari Database.</div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_URL = "https://rhodesapi.vercel.app/api/operator";
+        let opDatabase = [];
+
+        async function fetchOperators() {
+            try {
+                const res = await fetch(API_URL);
+                opDatabase = await res.json();
+                renderOperators();
+            } catch (e) {
+                console.error("Gagal memuat API, silakan deploy ke GitHub Pages/Vercel.");
+            }
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function renderOperators() {
+            const grid = document.getElementById('operatorGrid');
+            opDatabase.slice(0, 32).forEach(op => {
+                grid.innerHTML += `
+                    <div class="ak-panel p-2 rounded cursor-pointer hover:border-sky-500 text-center">
+                        <p class="text-[10px] truncate">${op.name}</p>
+                    </div>`;
+            });
+        }
+
+        function calculateSavings() {
+            const o = parseInt(document.getElementById('currentOrundum').value) || 0;
+            document.getElementById('resTotalPulls').innerText = "Estimasi Pulls: " + Math.floor(o / 600);
+        }
+
+        fetchOperators();
+    </script>
+</body>
+</html>
+
+```
