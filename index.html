@@ -370,6 +370,7 @@
         const ACESHIP_AVATAR_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/";
         const ACESHIP_CLASS_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/classes/class_";
         const ACESHIP_ITEM_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/items/";
+        let itemIconMap = {};
 
         // Map profession dari JSON ke format display yang lebih rapi
         const classMapping = {
@@ -384,6 +385,20 @@
         };
 
         // --- 1. LIVE FETCHING DATA --
+        async function fetchItemIcons() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/Kengxxiao/ArknightsData/master/en_US/gamedata/excel/item_table.json');
+                const data = await response.json();
+                // Mapping: ID -> iconId (nama file asli)
+                for (const itemId in data.items) {
+                    itemIconMap[itemId] = data.items[itemId].iconId;
+                }
+                console.log("Item Icons Loaded!");
+            } catch (e) {
+                console.error("Gagal memuat item data:", e);
+            }
+        };
+        
         async function fetchOperators() {
             try {
                 // Menggunakan API Aceship yang sudah terformat rapi dan bebas CORS
@@ -400,7 +415,7 @@
                 data.forEach(op => {
                 // 1. Ambil tipe dari API (contoh: "近卫")
                 const type = op.type;
-                const testUrl = `https://aceship.github.io/AN-EN-Tags/img/characters/${op.id}.png`;
+                const testUrl = `https://aceship.github.io/AN-EN-Tags/img/characters/${op.id}_1.png`;
                 console.log("Cek URL:", testUrl);
                 // 2. Langsung cek apakah 'type' Mandarin tersebut ada di classMapping
                 // Hapus !op.isNotObtainable karena field ini tidak selalu ada di API Aceship
@@ -411,7 +426,7 @@
                         rarity: op.level,
                         // 3. Langsung ambil nilainya dari classMapping[type]
                         class: classMapping[type], 
-                        avatar: `https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/${op.id}.png`
+                        avatar: `https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/${op.id}_1.png`
                     });
                 } else {
                     // Debug: ini akan membantu Anda melihat jika ada tipe baru yang belum masuk classMapping
@@ -670,13 +685,15 @@
 
             let shuffledMats = genericMats.sort(() => 0.5 - Math.random()).slice(0, 3);
             shuffledMats.forEach(m => {
+                const iconName = itemIconMap[m.id] || m.id;
+                const finalUrl = `https://aceship.github.io/AN-EN-Tags/img/items/${iconName}.png`;
                 let finalCount = Math.floor(Math.random() * 5) + 4;
                 if(tM > 0) finalCount += (tM * 2);
                 if(currentPlannerOp.rarity < 6) finalCount = Math.floor(finalCount * 0.6);
 
                 matContainer.innerHTML += `
                 <div class="bg-slate-800 p-2 text-center rounded border border-slate-700 hover:border-sky-500 transition flex flex-col items-center">
-                    <img src="${ACESHIP_ITEM_URL}${m.id}.png" loading="lazy" class="w-10 h-10 mb-1">
+                    <img src="${finalUrl}" loading="lazy" class="w-10 h-10 mb-1">
                     <p class="text-[9px] text-gray-300 leading-tight truncate w-full px-1" title="${m.name}">${m.name}</p>
                     <p class="font-bold text-white text-sm mt-1">x${finalCount}</p>
                 </div>`;
