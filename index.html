@@ -373,14 +373,14 @@
 
         // Map profession dari JSON ke format display yang lebih rapi
         const classMapping = {
-            "先锋": "PIONEER",
-            "近卫": "WARRIOR",
-            "狙击": "SNIPER",
-            "重装": "TANK",
-            "术师": "CASTER",
-            "辅助": "SUPPORT",
-            "医疗": "MEDIC",
-            "特种": "SPECIAL"
+            "先锋": "Pioneer",  // Vanguard
+            "近卫": "Warrior",  // Guard
+            "狙击": "Sniper",   // Sniper
+            "重装": "Tank",     // Defender
+            "术师": "Caster",   // Caster
+            "辅助": "Support",  // Supporter
+            "医疗": "Medic",    // Medic
+            "特种": "Special"   // Specialist
         };
 
         // --- 1. LIVE FETCHING DATA --
@@ -408,7 +408,7 @@
                 if (classMapping[profKey] && !op.isNotObtainable) {
                     opDatabase.push({
                         id: op.id,
-                        name: op.name,
+                        name: op.name_en,
                         rarity: op.rarity + 1,
                         class: classMapping[profKey], // Menggunakan key dari API
                         avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
