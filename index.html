@@ -367,20 +367,20 @@
     <!-- JAVASCRIPT: DATA FETCHING & LOGIC -->
     <script>
         let opDatabase = [];
-        const ACESHIP_AVATAR_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/";
+        const ACESHIP_AVATAR_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/characters/char_";
         const ACESHIP_CLASS_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/classes/class_";
         const ACESHIP_ITEM_URL = "https://raw.githubusercontent.com/Aceship/Arknight-Images/main/items/";
 
         // Map profession dari JSON ke format display yang lebih rapi
         const classMapping = {
-            "先锋": "Pioneer",  // Vanguard
-            "近卫": "Warrior",  // Guard
+            "先锋": "Vanguard",  // Vanguard
+            "近卫": "Guard",  // Guard
             "狙击": "Sniper",   // Sniper
-            "重装": "Tank",     // Defender
+            "重装": "Defender",     // Defender
             "术师": "Caster",   // Caster
-            "辅助": "Support",  // Supporter
+            "辅助": "Supporter",  // Supporter
             "医疗": "Medic",    // Medic
-            "特种": "Special"   // Specialist
+            "特种": "Specialist"   // Specialist
         };
 
         // --- 1. LIVE FETCHING DATA --
