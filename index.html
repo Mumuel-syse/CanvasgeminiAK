@@ -384,26 +384,29 @@
             'SPECIAL': 'Specialist'
         };
 
-        // --- 1. LIVE FETCHING DATA ---
+        // --- 1. LIVE FETCHING DATA --
         async function fetchOperators() {
             try {
-                // Menarik data JSON langsung dari Kengxxiao repository (Arknights Game Data)
-                const response = await fetch('https://rhodesapi.com');
+                // Menggunakan API Aceship yang sudah terformat rapi dan bebas CORS
+                const url = 'https://aceship.github.io/AN-EN-Tags/json/tl-akhr.json';
+                const response = await fetch(url);
                 const data = await response.json();
 
-                for (const key in data) {
-                    const op = data[key];
-                    // Filter: Hanya ambil operator asli (Bukan trap/token, memiliki nama dan display number/isNotObtainable false)
-                    if (classMap[op.profession] && !op.isNotObtainable && !key.startsWith('trap_') && !key.startsWith('token_')) {
+                // Di Aceship, data langsung berupa array, bukan objek dengan key
+                data.forEach(op => {
+                    // Penyesuaian filter: 
+                    // Aceship sudah memproses banyak hal, kita tinggal menyesuaikan field-nya
+                    // 'profession' di Aceship biasanya sudah dalam bentuk string (WARRIOR, SNIPER, dll)
+                    if (classMap[op.profession] && !op.isNotObtainable) {
                         opDatabase.push({
-                            id: key, // e.g. char_102_texas
+                            id: op.id, // Aceship sudah menyertakan id
                             name: op.name,
-                            rarity: op.rarity + 1, // Di JSON, rarity dimulai dari 0 (5 = bintang 6)
+                            rarity: op.rarity + 1, // Tetap gunakan +1 karena rarity dimulai dari 0
                             class: classMap[op.profession],
-                            avatar: `${ACESHIP_AVATAR_URL}${key}.png`
+                            avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
                         });
                     }
-                }
+                });
 
                 // Urutkan berdasarkan Rarity tinggi ke rendah, lalu alfabetis
                 opDatabase.sort((a, b) => {
@@ -423,13 +426,14 @@
 
             } catch (error) {
                 console.error("Gagal menarik data operator:", error);
-                document.getElementById('globalLoader').innerHTML = "<p class='text-red-500 font-bold'>Gagal menghubungi server Terra (CORS/Network Error). Muat ulang halaman.</p>";
+                document.getElementById('globalLoader').innerHTML = "<p class='text-red-500 font-bold'>Gagal menghubungi server Terra. Muat ulang halaman.</p>";
             }
         }
 
         window.onload = () => {
-            fetchOperators(); // Eksekusi fetch saat web dibuka
+            fetchOperators();
         };
+
 
         // --- 2. NAVIGATION LOGIC ---
         function switchView(viewId) {
