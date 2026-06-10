@@ -367,7 +367,7 @@
     <!-- JAVASCRIPT: DATA FETCHING & LOGIC -->
     <script>
         let opDatabase = [];
-        const ACESHIP_AVATAR_URL = "https://aceship.github.io/AN-EN-Tags/img/avatars/";
+        const ACESHIP_AVATAR_URL = "https://aceship.github.io/AN-EN-Tags/img/characters/";
         const ACESHIP_CLASS_URL = "https://aceship.github.io/AN-EN-Tags/img/classes/class_";
         const ACESHIP_ITEM_URL = "https://aceship.github.io/AN-EN-Tags/img/items/";
 
@@ -406,7 +406,7 @@
                     opDatabase.push({
                     id: op.id,
                         name: op.name_en,
-                        rarity: op.rarity + 1,
+                        rarity: op.level + 1,
                         // 3. Langsung ambil nilainya dari classMapping[type]
                         class: classMapping[type], 
                         avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
