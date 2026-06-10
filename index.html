@@ -405,12 +405,12 @@
                 // 2. Pastikan classMap Anda memiliki key yang SESUAI dengan isi di API
                 // Jika classMap Anda isinya "Warrior", tapi API kasih "WARRIOR", 
                 // Anda harus mencocokkannya dengan .toUpperCase()
-                if (classMap[profKey] && !op.isNotObtainable) {
+                if (classMapping[profKey] && !op.isNotObtainable) {
                     opDatabase.push({
                         id: op.id,
                         name: op.name,
                         rarity: op.rarity + 1,
-                        class: classMap[profKey], // Menggunakan key dari API
+                        class: classMapping[profKey], // Menggunakan key dari API
                         avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
                     });
                 } else {
