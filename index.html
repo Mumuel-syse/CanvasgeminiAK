@@ -373,14 +373,14 @@
 
         // Map profession dari JSON ke format display yang lebih rapi
         const classMap = {
-            'PIONEER': 'Vanguard',
-            'WARRIOR': 'Guard',
-            'SNIPER': 'Sniper',
-            'TANK': 'Defender',
-            'CASTER': 'Caster',
-            'SUPPORT': 'Supporter',
-            'MEDIC': 'Medic',
-            'SPECIAL': 'Specialist'
+            "先锋": "PIONEER",
+            "近卫": "WARRIOR",
+            "狙击": "SNIPER",
+            "重装": "TANK",
+            "术师": "CASTER",
+            "辅助": "SUPPORT",
+            "医疗": "MEDIC",
+            "特种": "SPECIAL"
         };
 
         // --- 1. LIVE FETCHING DATA --
@@ -399,7 +399,8 @@
                 // Di Aceship, data langsung berupa array, bukan objek dengan key
                 data.forEach(op => {
                 // 1. Ambil profesi dari data API
-                const profKey = op.profession; 
+                const type = op.type;
+                const profKey = classMapping[type];
 
                 // 2. Pastikan classMap Anda memiliki key yang SESUAI dengan isi di API
                 // Jika classMap Anda isinya "Warrior", tapi API kasih "WARRIOR", 
@@ -414,7 +415,7 @@
                     });
                 } else {
                     // Debug: lihat apa yang terjadi jika tidak cocok
-                    console.warn("Operator tidak cocok dengan classMap:", op.name, "Profesi:", profKey);
+                    console.warn("Operator tidak cocok:", op.name_en, "Tipe:", type);
                 }
             });
                 
