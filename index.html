@@ -389,24 +389,30 @@
                 // Menggunakan API Aceship yang sudah terformat rapi dan bebas CORS
                 const url = 'https://aceship.github.io/AN-EN-Tags/json/tl-akhr.json';
                 const response = await fetch(url);
-                const data = await response.json();
+                const rawData = await response.json();
+
+                // Jika Aceship API memberikan data dalam bentuk objek bukan array, 
+                // kita perlu memastikan kita memprosesnya dengan benar.
+                // Kadang data Aceship dibungkus dalam root tertentu.
+                const data = Array.isArray(rawData) ? rawData : Object.values(rawData);
 
                 // Di Aceship, data langsung berupa array, bukan objek dengan key
                 data.forEach(op => {
                     // Penyesuaian filter: 
-                    console.log("Cek Operator:", op.name, "| Profession:", op.profession);
+                    console.log("Struktur data op:", op);
                     // Aceship sudah memproses banyak hal, kita tinggal menyesuaikan field-nya
                     // 'profession' di Aceship biasanya sudah dalam bentuk string (WARRIOR, SNIPER, dll)
-                    if (classMap[op.profession]) {
+                    const prof = op.profession || "";
+                    if (classMap[prof]) {
                         opDatabase.push({
-                            id: op.id,
-                            name: op.name,
-                            rarity: op.rarity + 1,
-                            class: classMap[op.profession],
-                            avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
-                        });
-                    }
-                });
+                        id: op.id,
+                        name: op.name,
+                        rarity: op.rarity + 1,
+                        class: classMap[prof],
+                        avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
+                    });
+                }
+            });
 
                 // Urutkan berdasarkan Rarity tinggi ke rendah, lalu alfabetis
                 opDatabase.sort((a, b) => {
