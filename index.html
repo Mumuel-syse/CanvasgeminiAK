@@ -394,6 +394,7 @@
                 // Di Aceship, data langsung berupa array, bukan objek dengan key
                 data.forEach(op => {
                     // Penyesuaian filter: 
+                    console.log("Cek Operator:", op.name, "| Profession:", op.profession);
                     // Aceship sudah memproses banyak hal, kita tinggal menyesuaikan field-nya
                     // 'profession' di Aceship biasanya sudah dalam bentuk string (WARRIOR, SNIPER, dll)
                     if (classMap[op.profession]) {
