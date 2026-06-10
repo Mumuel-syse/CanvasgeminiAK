@@ -24,7 +24,7 @@
         }
 
         .bg-overlay {
-            background: rgba(15, 23, 42, 0.92); 
+            background: rgba(15, 23, 42, 0.9); 
             backdrop-filter: blur(16px); 
             -webkit-backdrop-filter: blur(16px);
             min-height: 100vh;
@@ -93,30 +93,18 @@
         }
         .autocomplete-items div {
             padding: 10px; cursor: pointer; border-bottom: 1px solid #334155;
-            display: flex; align-items: center; gap: 10px;
+            display: flex; items-center; gap: 10px;
         }
         .autocomplete-items div:hover { background-color: #0f172a; color: #38bdf8; }
-        .autocomplete-items img { width: 30px; height: 30px; border-radius: 4px; object-fit: cover; object-position: top; }
-        
-        /* Object cover top for full arts */
-        .op-img-cover { object-fit: cover; object-position: center 15%; }
+        .autocomplete-items img { width: 30px; height: 30px; border-radius: 4px; object-fit: cover; }
     </style>
 </head>
 <body>
     <!-- LOADING SCREEN -->
     <div id="globalLoader">
         <div class="spinner mb-4"></div>
-        <h2 class="text-xl ak-title-font text-sky-400 font-bold tracking-widest" id="loaderTitle">PRTS SYSTEM INITIALIZING</h2>
-        <p class="text-gray-400 text-sm mt-2" id="loaderText">Menghubungi RhodesAPI Server...</p>
-    </div>
-
-    <!-- TOAST NOTIFICATION -->
-    <div id="toastNotif" class="fixed top-20 right-4 bg-orange-500/90 text-white px-4 py-3 rounded shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex items-center gap-3">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <div>
-            <p class="font-bold text-sm">Mode Offline Aktif</p>
-            <p class="text-xs">API gagal dimuat. Menggunakan database lokal.</p>
-        </div>
+        <h2 class="text-xl ak-title-font text-sky-400 font-bold tracking-widest">PRTS SYSTEM INITIALIZING</h2>
+        <p class="text-gray-400 text-sm mt-2">Fetching live operator database from Terra...</p>
     </div>
 
     <div class="bg-overlay">
@@ -144,14 +132,14 @@
             <section id="view-home" class="view-section active space-y-8">
                 <div class="text-center py-12">
                     <h1 class="text-4xl md:text-6xl font-extrabold text-white ak-title-font mb-4 drop-shadow-[0_0_15px_rgba(56,189,248,0.5)]">RHODES ISLAND TERMINAL</h1>
-                    <p class="text-sky-300 max-w-2xl mx-auto text-sm md:text-base">Sistem Manajemen Sumber Daya Terintegrasi. Didukung oleh RhodesAPI dan Aceship Assets.</p>
+                    <p class="text-sky-300 max-w-2xl mx-auto text-sm md:text-base">Sistem Manajemen Sumber Daya Terintegrasi. Menggunakan API langsung untuk memuat seluruh operator.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div onclick="switchView('operators')" class="ak-panel p-6 rounded-xl cursor-pointer hover:border-sky-400 hover:-translate-y-2 transition group">
                         <i class="fa-solid fa-users text-4xl text-sky-400 mb-4 group-hover:scale-110 transition"></i>
                         <h3 class="text-xl font-bold text-white mb-2 ak-title-font">Operator Database</h3>
-                        <p class="text-sm text-gray-400">Arsip data operator via RhodesAPI. Klik operator dari daftar ini untuk menyusun rencana Build.</p>
+                        <p class="text-sm text-gray-400">Arsip lengkap 300+ operator beserta Asset dari Aceship. Klik operator untuk merencanakan Build.</p>
                     </div>
                     <div onclick="switchView('calculator')" class="ak-panel p-6 rounded-xl cursor-pointer hover:border-yellow-400 hover:-translate-y-2 transition group">
                         <i class="fa-solid fa-wallet text-4xl text-yellow-400 mb-4 group-hover:scale-110 transition"></i>
@@ -161,7 +149,7 @@
                     <div onclick="switchView('planner')" class="ak-panel p-6 rounded-xl cursor-pointer hover:border-purple-400 hover:-translate-y-2 transition group">
                         <i class="fa-solid fa-arrow-up-right-dots text-4xl text-purple-400 mb-4 group-hover:scale-110 transition"></i>
                         <h3 class="text-xl font-bold text-white mb-2 ak-title-font">Build Planner</h3>
-                        <p class="text-sm text-gray-400">Simulasi kebutuhan biaya LMD dan Material untuk meningkatkan level dan keahlian operator.</p>
+                        <p class="text-sm text-gray-400">Simulasi kebutuhan biaya LMD dan Material menggunakan integrasi ikon item asli.</p>
                     </div>
                 </div>
             </section>
@@ -172,7 +160,7 @@
                     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                         <div>
                             <h2 class="text-2xl font-bold text-white mb-1 ak-title-font">OPERATOR DATABASE</h2>
-                            <p class="text-sm text-gray-400"><span id="apiStatusText">Data live dari RhodesAPI.</span> <span id="opCount" class="text-sky-400 font-bold">0</span> Operator termuat. <br><span class="text-sky-300 font-bold">Klik gambar operator untuk membuka Build Planner.</span></p>
+                            <p class="text-sm text-gray-400">Data live dari repositori Github. <span id="opCount" class="text-sky-400 font-bold">0</span> Operator termuat. <br><span class="text-sky-300 font-bold">Klik gambar operator untuk membuka Build Planner.</span></p>
                         </div>
                         <div class="w-full md:w-1/3 relative">
                             <i class="fa-solid fa-search absolute left-3 top-3.5 text-gray-500"></i>
@@ -261,7 +249,7 @@
             <section id="view-planner" class="view-section space-y-6">
                 <div class="ak-panel p-6 rounded-xl border-l-4 border-l-purple-500">
                     <h2 class="text-2xl font-bold text-white mb-2 ak-title-font">OPERATOR BUILD PLANNER</h2>
-                    <p class="text-sm text-gray-400">Kalkulator kebutuhan material logistik dan peningkatan level.</p>
+                    <p class="text-sm text-gray-400">Kalkulator kebutuhan material menggunakan Asset Aceship.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -280,11 +268,409 @@
 
                         <!-- Status Terpilih -->
                         <div id="selectedOpDisplay" class="hidden flex items-center gap-4 bg-slate-900/80 p-3 rounded-lg border border-sky-500/50">
-                            <img id="selOpImage" src="" class="w-14 h-14 rounded border border-slate-600 object-cover object-top bg-slate-800">
+                            <img id="selOpImage" src="" class="w-14 h-14 rounded border border-slate-600 object-cover bg-slate-800">
                             <div>
                                 <p class="text-xs text-gray-400 uppercase">Target Operasi:</p>
                                 <p class="font-bold text-white text-lg" id="selOpName">-</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-4 bg-slate-900/50 p-4 rounded-lg border 
+                        <div class="grid grid-cols-2 gap-4 bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+                            <h3 class="col-span-2 text-center font-bold text-gray-300 border-b border-slate-600 pb-2">Status Saat Ini</h3>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Elite</label>
+                                <select id="currElite" class="w-full p-2"><option value="0">E0</option><option value="1">E1</option><option value="2">E2</option></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Level</label>
+                                <input type="number" id="currLevel" value="1" min="1" max="90" class="w-full p-2">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 bg-slate-900/50 p-4 rounded-lg border border-purple-900">
+                            <h3 class="col-span-2 text-center font-bold text-purple-300 border-b border-purple-800 pb-2">Target Status</h3>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Elite Target</label>
+                                <select id="targElite" class="w-full p-2"><option value="0">E0</option><option value="1">E1</option><option value="2" selected>E2</option></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Level Target</label>
+                                <input type="number" id="targLevel" value="90" min="1" max="90" class="w-full p-2">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-xs text-gray-400 mb-1">Target Skill Mastery</label>
+                                <select id="targMastery" class="w-full p-2"><option value="0">Skill Lvl 7</option><option value="1">Mastery 1</option><option value="2">Mastery 2</option><option value="3" selected>Mastery 3</option></select>
+                            </div>
+                            <div class="col-span-2 mt-2">
+                                <label class="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+                                    <input type="checkbox" id="targModule" class="w-4 h-4 rounded bg-slate-800 text-purple-500"> Buka Module (Stage 3)
+                                </label>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateBuild()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition shadow-[0_0_15px_rgba(147,51,234,0.3)]">KALKULASI LOGISTIK</button>
+                    </div>
+
+                    <!-- RESULT SECTION -->
+                    <div class="ak-panel p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2"><i class="fa-solid fa-box-open text-purple-400"></i> Kebutuhan Resource</h3>
+                        
+                        <div id="buildInitialState" class="text-center text-gray-400 py-10 flex flex-col items-center">
+                            <i class="fa-solid fa-microchip text-4xl text-slate-600 mb-3"></i>
+                            <p>Silakan cari operator dan tekan Kalkulasi.</p>
+                        </div>
+
+                        <div id="buildResults" class="hidden space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- LMD -->
+                                <div class="bg-slate-900/80 p-4 rounded-lg border border-blue-900/50 text-center relative flex flex-col items-center">
+                                    <img src="https://aceship.github.io/AN-EN-Tags/img/items/4001.png" class="w-12 h-12 mb-2">
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-wider relative z-10">Total LMD</p>
+                                    <p id="resBuildLMD" class="text-xl font-bold text-blue-400 relative z-10">0</p>
+                                </div>
+                                <!-- EXP -->
+                                <div class="bg-slate-900/80 p-4 rounded-lg border border-yellow-900/50 text-center relative flex flex-col items-center">
+                                    <img src="https://aceship.github.io/AN-EN-Tags/img/items/2004.png" class="w-12 h-12 mb-2">
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-wider relative z-10">Total EXP</p>
+                                    <p id="resBuildEXP" class="text-xl font-bold text-yellow-400 relative z-10">0</p>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-sky-300 mb-3 uppercase tracking-wider">Material Utama (Simulasi)</h4>
+                                <div id="materialList" class="grid grid-cols-3 sm:grid-cols-4 gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+
+        <!-- FOOTER & CREDITS -->
+        <footer class="border-t border-slate-800 bg-slate-900/95 mt-auto py-8">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <div class="flex justify-center gap-6 mb-4">
+                    <a href="https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/character_table.json" target="_blank" class="text-gray-400 hover:text-white transition" title="Arknights Game Data (JSON)"><i class="fa-solid fa-database text-2xl"></i></a>
+                    <a href="https://aceship.github.io/AN-EN-Tags/" target="_blank" class="text-gray-400 hover:text-green-400 transition" title="Aceship Toolbox"><i class="fa-solid fa-toolbox text-2xl"></i></a>
+                    <a href="https://penguin-stats.io/" target="_blank" class="text-gray-400 hover:text-sky-400 transition" title="Penguin Stats"><i class="fa-solid fa-penguin text-2xl"></i></a>
+                </div>
+                <p class="text-gray-400 text-sm">PRTS.NET Terminal. Menarik data JSON asli EN Server dan aset gambar dari:</p>
+                <div class="flex flex-wrap justify-center gap-2 mt-2 text-xs font-semibold">
+                    <span class="bg-slate-800 px-2 py-1 rounded text-white">Kengxxiao GameData Repo</span>
+                    <span class="bg-slate-800 px-2 py-1 rounded text-green-300">Aceship (Image CDN)</span>
+                    <span class="bg-slate-800 px-2 py-1 rounded text-sky-300">Penguin Stats</span>
+                </div>
+                <p class="text-[10px] text-slate-600 mt-4">Arknights is a registered trademark of Hypergryph / Yostar.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT: DATA FETCHING & LOGIC -->
+    <script>
+        let opDatabase = [];
+        const ACESHIP_AVATAR_URL = "https://aceship.github.io/AN-EN-Tags/img/avatars/";
+        const ACESHIP_CLASS_URL = "https://aceship.github.io/AN-EN-Tags/img/classes/class_";
+        const ACESHIP_ITEM_URL = "https://aceship.github.io/AN-EN-Tags/img/items/";
+
+        // Map profession dari JSON ke format display yang lebih rapi
+        const classMap = {
+            'PIONEER': 'Vanguard',
+            'WARRIOR': 'Guard',
+            'SNIPER': 'Sniper',
+            'TANK': 'Defender',
+            'CASTER': 'Caster',
+            'SUPPORT': 'Supporter',
+            'MEDIC': 'Medic',
+            'SPECIAL': 'Specialist'
+        };
+
+        // --- 1. LIVE FETCHING DATA ---
+        async function fetchOperators() {
+            try {
+                // Menarik data JSON langsung dari Kengxxiao repository (Arknights Game Data)
+                const url = 'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/en_US/gamedata/excel/character_table.json';
+                const response = await fetch(url);
+                const data = await response.json();
+
+                for (const key in data) {
+                    const op = data[key];
+                    // Filter: Hanya ambil operator asli (Bukan trap/token, memiliki nama dan display number/isNotObtainable false)
+                    if (classMap[op.profession] && !op.isNotObtainable && !key.startsWith('trap_') && !key.startsWith('token_')) {
+                        opDatabase.push({
+                            id: key, // e.g. char_102_texas
+                            name: op.name,
+                            rarity: op.rarity + 1, // Di JSON, rarity dimulai dari 0 (5 = bintang 6)
+                            class: classMap[op.profession],
+                            avatar: `${ACESHIP_AVATAR_URL}${key}.png`
+                        });
+                    }
+                }
+
+                // Urutkan berdasarkan Rarity tinggi ke rendah, lalu alfabetis
+                opDatabase.sort((a, b) => {
+                    if(b.rarity !== a.rarity) return b.rarity - a.rarity;
+                    return a.name.localeCompare(b.name);
+                });
+
+                document.getElementById('opCount').innerText = opDatabase.length;
+                renderOperators();
+
+                // Matikan loader
+                setTimeout(() => {
+                    const loader = document.getElementById('globalLoader');
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }, 500);
+
+            } catch (error) {
+                console.error("Gagal menarik data operator:", error);
+                document.getElementById('globalLoader').innerHTML = "<p class='text-red-500 font-bold'>Gagal menghubungi server Terra (CORS/Network Error). Muat ulang halaman.</p>";
+            }
+        }
+
+        window.onload = () => {
+            fetchOperators(); // Eksekusi fetch saat web dibuka
+        };
+
+        // --- 2. NAVIGATION LOGIC ---
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            
+            const links = document.querySelectorAll('.nav-link');
+            if(viewId === 'home') links[0].classList.add('active');
+            if(viewId === 'operators') links[1].classList.add('active');
+            if(viewId === 'calculator') links[2].classList.add('active');
+            if(viewId === 'planner') links[3].classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 3. DATABASE LIST LOGIC ---
+        let activeFilter = 'All';
+        function setActiveFilter(className, btnElement) {
+            activeFilter = className;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            filterOperators();
+        }
+
+        function filterOperators() {
+            const query = document.getElementById('opSearch').value.toLowerCase();
+            const grid = document.getElementById('operatorGrid');
+            grid.innerHTML = '';
+            
+            let filtered = opDatabase.filter(op => {
+                const matchName = op.name.toLowerCase().includes(query);
+                const matchClass = activeFilter === 'All' || op.class === activeFilter;
+                return matchName && matchClass;
+            });
+
+            if(filtered.length === 0) {
+                document.getElementById('noOpResult').classList.remove('hidden');
+            } else {
+                document.getElementById('noOpResult').classList.add('hidden');
+            }
+
+            // Membatasi render untuk performa (Max 100 saat pertama lihat, biar tidak lag gambarnya)
+            const maxRender = query === '' && activeFilter === 'All' ? 100 : filtered.length;
+
+            for(let i=0; i<Math.min(filtered.length, maxRender); i++) {
+                const op = filtered[i];
+                const rarityColor = op.rarity === 6 ? 'bg-orange-500' : (op.rarity === 5 ? 'bg-yellow-500' : (op.rarity === 4 ? 'bg-purple-500' : 'bg-gray-400'));
+                // Fallback image ke ikon class jika foto profil Aceship gagal diload (404)
+                const fallbackImg = `${ACESHIP_CLASS_URL}${op.class.toLowerCase()}.png`;
+
+                const cardHTML = `
+                <div onclick="selectOpForPlanner('${op.id}')" class="ak-panel rounded-lg overflow-hidden op-card border border-slate-700 cursor-pointer relative group flex flex-col h-full bg-slate-800/80">
+                    <div class="relative w-full aspect-square bg-slate-900 flex items-center justify-center overflow-hidden">
+                        <img src="${op.avatar}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackImg}';this.classList.add('opacity-50','scale-50');" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                        <div class="absolute top-1 right-1 ${rarityColor} text-black text-[10px] font-bold px-1.5 py-0.5 rounded shadow z-10">${op.rarity}★</div>
+                        <div class="absolute inset-0 bg-sky-900/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-20">
+                            <span class="text-white font-bold text-[10px] bg-black/60 px-2 py-1 rounded">PLAN BUILD</span>
+                        </div>
+                    </div>
+                    <div class="p-2 text-center mt-auto">
+                        <h4 class="font-bold text-white text-[11px] truncate" title="${op.name}">${op.name}</h4>
+                    </div>
+                </div>`;
+                grid.innerHTML += cardHTML;
+            }
+        }
+        function renderOperators() { filterOperators(); }
+
+        // --- 4. REDIRECT TO PLANNER LOGIC ---
+        let currentPlannerOp = null;
+
+        function selectOpForPlanner(opId) {
+            const op = opDatabase.find(o => o.id === opId);
+            if(op) {
+                currentPlannerOp = op;
+                document.getElementById('plannerSearchInput').value = op.name;
+                
+                const display = document.getElementById('selectedOpDisplay');
+                display.classList.remove('hidden');
+                document.getElementById('selOpName').innerText = `${op.name} (${op.rarity}★ ${op.class})`;
+                document.getElementById('selOpImage').src = op.avatar;
+                
+                switchView('planner');
+            }
+        }
+
+        // --- 5. LIVE SEARCH / AUTOCOMPLETE IN PLANNER ---
+        const searchInput = document.getElementById('plannerSearchInput');
+        const searchList = document.getElementById('plannerAutocompleteList');
+
+        searchInput.addEventListener('input', function() {
+            const val = this.value;
+            searchList.innerHTML = '';
+            
+            if (!val) { searchList.classList.add('hidden'); return; }
+            searchList.classList.remove('hidden');
+            let count = 0;
+
+            opDatabase.forEach(op => {
+                if (op.name.toLowerCase().includes(val.toLowerCase()) && count < 8) {
+                    const div = document.createElement('div');
+                    const fallbackImg = `${ACESHIP_CLASS_URL}${op.class.toLowerCase()}.png`;
+                    
+                    div.innerHTML = `
+                        <img src="${op.avatar}" onerror="this.src='${fallbackImg}'">
+                        <div>
+                            <span class="font-bold text-sm">${op.name}</span> 
+                            <span class="text-xs text-gray-400">(${op.rarity}★ ${op.class})</span>
+                        </div>
+                    `;
+                    div.addEventListener('click', function() {
+                        selectOpForPlanner(op.id);
+                        searchList.classList.add('hidden');
+                    });
+                    searchList.appendChild(div);
+                    count++;
+                }
+            });
+            if(count === 0) searchList.innerHTML = '<div class="text-gray-500 italic p-3">Operator tidak ditemukan</div>';
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target !== searchInput) searchList.classList.add('hidden');
+        });
+
+        // --- 6. SAVING CALCULATOR LOGIC ---
+        function calculateSavings() {
+            const months = parseFloat(document.getElementById('months').value) || 0;
+            const days = Math.floor(months * 30);
+            
+            let totalOrun = (parseInt(document.getElementById('currentOrundum').value) || 0);
+            let totalOP = (parseInt(document.getElementById('currentOP').value) || 0);
+            let totalHH = (parseInt(document.getElementById('currentHH').value) || 0);
+
+            if(document.getElementById('dailyM').checked) totalOrun += 100 * days;
+            if(document.getElementById('weeklyM').checked) totalOrun += 500 * Math.floor(days/7);
+            if(document.getElementById('monthlyCard').checked) {
+                totalOrun += 200 * days;
+                totalOP += 6 * Math.floor(days/30);
+            }
+            totalOrun += (parseInt(document.getElementById('annihilation').value) || 0) * Math.floor(days/7);
+            
+            const yellowLvl = parseInt(document.getElementById('yellowCertLevel').value);
+            if(yellowLvl === 5) totalHH += 38 * Math.floor(months);
+
+            totalOP += (parseInt(document.getElementById('newEvent').value) || 0) * 29;
+            totalOrun += (parseInt(document.getElementById('rerunEvent').value) || 0) * 2000;
+            totalOrun += ((parseInt(document.getElementById('newEvent').value) || 0) + (parseInt(document.getElementById('rerunEvent').value) || 0)) * 300;
+
+            const grandOrundum = totalOrun + (totalOP * 180) + (totalHH * 600);
+            document.getElementById('resTotalPulls').innerText = Math.floor(grandOrundum / 600);
+            document.getElementById('calcResult').classList.remove('hidden');
+        }
+
+        // --- 7. BUILD PLANNER CALCULATION & ASSETS LOGIC ---
+        function calculateBuild() {
+            if(!currentPlannerOp) { alert("Pilih operator terlebih dahulu."); return; }
+
+            const cE = parseInt(document.getElementById('currElite').value);
+            const cL = parseInt(document.getElementById('currLevel').value);
+            const tE = parseInt(document.getElementById('targElite').value);
+            const tL = parseInt(document.getElementById('targLevel').value);
+            const tM = parseInt(document.getElementById('targMastery').value);
+            const tMod = document.getElementById('targModule').checked;
+
+            if(tE < cE || (tE === cE && tL < cL)) {
+                alert("Error: Status target tidak boleh lebih rendah dari saat ini.");
+                return;
+            }
+
+            let reqLMD = 0, reqEXP = 0;
+            let costMod = currentPlannerOp.rarity === 5 ? 0.75 : (currentPlannerOp.rarity <= 4 ? 0.5 : 1.0);
+
+            const e0_exp = 115000 * costMod, e0_lmd = 115000 * costMod;
+            const e1_exp = 360000 * costMod, e1_lmd = 350000 * costMod, prom1 = 30000 * costMod;
+            const e2_exp = 650000 * costMod, e2_lmd = 820000 * costMod, prom2 = 180000 * costMod;
+
+            if(cE === 0 && tE > 0) { reqEXP += e0_exp; reqLMD += e0_lmd + prom1; }
+            if(cE <= 1 && tE > 1) { reqEXP += e1_exp; reqLMD += e1_lmd + prom2; }
+            if(tE === 2) { reqEXP += (tL/90) * e2_exp; reqLMD += (tL/90) * e2_lmd; }
+            
+            if(tM > 0) reqLMD += tM * (100000 * costMod);
+            if(tMod) reqLMD += 120000;
+
+            document.getElementById('buildInitialState').classList.add('hidden');
+            document.getElementById('buildResults').classList.remove('hidden');
+            
+            // Format angka
+            let displayLMD = Math.floor(reqLMD);
+            if(displayLMD > 1000) displayLMD = (displayLMD/1000).toFixed(1) + "k";
+            else if (displayLMD === 0) displayLMD = "0";
+
+            let displayEXP = Math.floor(reqEXP);
+            if(displayEXP > 1000) displayEXP = (displayEXP/1000).toFixed(1) + "k";
+            else if (displayEXP === 0) displayEXP = "0";
+
+            document.getElementById('resBuildLMD').innerText = displayLMD;
+            document.getElementById('resBuildEXP').innerText = displayEXP;
+
+            // Render Material (Aceship Asset Integration)
+            const matContainer = document.getElementById('materialList');
+            matContainer.innerHTML = '';
+            
+            if(tMod) {
+                // Module Data Block Icon
+                matContainer.innerHTML += `
+                <div class="bg-slate-800 p-2 text-center rounded border border-red-900/50 flex flex-col items-center">
+                    <img src="${ACESHIP_ITEM_URL}mod_unlock_token.png" class="w-10 h-10 mb-1">
+                    <p class="text-[9px] text-gray-300 leading-tight">Module Data</p>
+                    <p class="font-bold text-white text-sm mt-1">x12</p>
+                </div>`;
+            }
+
+            // Simulasi Material T6 / T5 menggunakan ID asli item Aceship
+            // 30135 = D32 Steel, 30125 = Bipolar, 30115 = Polymerization, 30145 = Crystalline, 30104 = RMA70-24
+            const genericMats = [
+                { id: '30135', name: 'D32 Steel' },
+                { id: '30125', name: 'Bipolar Nanoflake' },
+                { id: '30115', name: 'Polymerization Prep' },
+                { id: '30145', name: 'Crystalline Electronic' },
+                { id: '30104', name: 'RMA70-24' }
+            ];
+
+            let shuffledMats = genericMats.sort(() => 0.5 - Math.random()).slice(0, 3);
+            shuffledMats.forEach(m => {
+                let finalCount = Math.floor(Math.random() * 5) + 4;
+                if(tM > 0) finalCount += (tM * 2);
+                if(currentPlannerOp.rarity < 6) finalCount = Math.floor(finalCount * 0.6);
+
+                matContainer.innerHTML += `
+                <div class="bg-slate-800 p-2 text-center rounded border border-slate-700 hover:border-sky-500 transition flex flex-col items-center">
+                    <img src="${ACESHIP_ITEM_URL}${m.id}.png" class="w-10 h-10 mb-1">
+                    <p class="text-[9px] text-gray-300 leading-tight truncate w-full px-1" title="${m.name}">${m.name}</p>
+                    <p class="font-bold text-white text-sm mt-1">x${finalCount}</p>
+                </div>`;
+            });
+        }
+    </script>
+</body>
+</html>
+
+
+```
