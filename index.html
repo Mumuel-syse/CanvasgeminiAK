@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -397,11 +396,11 @@
                     // Penyesuaian filter: 
                     // Aceship sudah memproses banyak hal, kita tinggal menyesuaikan field-nya
                     // 'profession' di Aceship biasanya sudah dalam bentuk string (WARRIOR, SNIPER, dll)
-                    if (classMap[op.profession] && !op.isNotObtainable) {
+                    if (classMap[op.profession]) {
                         opDatabase.push({
-                            id: op.id, // Aceship sudah menyertakan id
+                            id: op.id,
                             name: op.name,
-                            rarity: op.rarity + 1, // Tetap gunakan +1 karena rarity dimulai dari 0
+                            rarity: op.rarity + 1,
                             class: classMap[op.profession],
                             avatar: `${ACESHIP_AVATAR_URL}${op.id}.png`
                         });
@@ -674,6 +673,3 @@
     </script>
 </body>
 </html>
-
-
-```
